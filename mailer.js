@@ -30,15 +30,28 @@ const smtpTransport = nodemailer.createTransport({
   },
 });
 
-const mailOptions = {
-  from: "bricxraincarasco21@gmail.com",
-  to: "bricxcarasco.gss@gmail.com",
-  subject: "Node.js Email with Secure OAuth",
-  generateTextFromHTML: true,
-  html: "<b>test</b>",
-};
+module.exports = {
+  sendEmail: (email, subject, message) => {
+    const mailOptions = {
+      from: "bricxcarasco.gss@gmail.com",
+      to: "bricxraincarasco21@gmail.com",
+      subject: `${email} - ${subject}`,
+      generateTextFromHTML: true,
+      html: `${email} 
+        ${message}`,
+    };
 
-smtpTransport.sendMail(mailOptions, (error, response) => {
-  error ? console.log(error) : console.log(response);
-  smtpTransport.close();
-});
+    let data = [];
+    smtpTransport.sendMail(mailOptions, (error, response) => {
+      data.push(error ? error : response);
+      return data;
+      smtpTransport.close();
+    });
+  },
+  test: () => {
+    return {
+      success: "true",
+      message: "Server is working!",
+    };
+  },
+};
