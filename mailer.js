@@ -3,7 +3,9 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-const { google } = require("googleapis");
+const {
+  google
+} = require("googleapis");
 
 const OAuth2 = google.auth.OAuth2;
 
@@ -33,8 +35,8 @@ const smtpTransport = nodemailer.createTransport({
 module.exports = {
   sendEmail: (email, subject, message) => {
     const mailOptions = {
-      from: "bricxcarasco.gss@gmail.com",
-      to: "bricxraincarasco21@gmail.com",
+      from: process.env.GOOGLE_USER_EMAIL,
+      to: process.env.MY_EMAIL_ADDRESS,
       subject: `${email} - ${subject}`,
       generateTextFromHTML: true,
       html: `${email} 
@@ -44,6 +46,7 @@ module.exports = {
     let data = [];
     smtpTransport.sendMail(mailOptions, (error, response) => {
       data.push(error ? error : response);
+      console.log(error ? error : response);
       return data;
       smtpTransport.close();
     });
