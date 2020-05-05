@@ -1,11 +1,13 @@
 const PORT = process.env.PORT || 5000;
 const express = require("express");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 
 const mailer = require("./mailer");
 
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -23,9 +25,9 @@ app.get("/", (req, res) => {
 });
 
 app.post("/api/email", (req, res) => {
-  let { email, subject, message } = req.body;
+  let { name, email, subject, message } = req.body;
   let errors = {};
-  if (!email || !subject || !message) {
+  if (!name || !email || !subject || !message) {
     errors["success"] = "false";
     errors["message"] = "Make sure fields are not empty!";
   }
@@ -37,7 +39,7 @@ app.post("/api/email", (req, res) => {
 
   if (errors.success) return res.status(400).send(errors);
 
-  let send_email = mailer.sendEmail(email, subject, message);
+  let send_email = mailer.sendEmail(name, email, subject, message);
 
   return res.status(200).send({
     success: true,

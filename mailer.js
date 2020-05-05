@@ -33,13 +33,13 @@ const smtpTransport = nodemailer.createTransport({
 });
 
 module.exports = {
-  sendEmail: (email, subject, message) => {
+  sendEmail: (name, email, subject, message) => {
     const mailOptions = {
       from: process.env.GOOGLE_USER_EMAIL,
       to: process.env.MY_EMAIL_ADDRESS,
-      subject: `${email} - ${subject}`,
+      subject: `${name} - ${email} - ${subject}`,
       generateTextFromHTML: true,
-      html: `${email} 
+      html: `${name} - ${email} 
         ${message}`,
     };
 
